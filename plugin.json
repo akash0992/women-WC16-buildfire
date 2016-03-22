@@ -1,0 +1,22 @@
+{
+  "author":"Akash Yadav"
+,"pluginName":"women-WC16-buildfire"
+,"pluginDescription":""
+,"supportEmail":""
+,"control":{
+  "content":{
+    "enabled":true
+  }
+, "design":{
+    "enabled":true
+  }
+, "settings":{
+    "enabled":false
+  }
+}
+,"widget":{
+
+},
+  "features" : [],
+  "languages" : ["en"]
+}
