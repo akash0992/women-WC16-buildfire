@@ -1,0 +1,188 @@
+<div class="col-md-12">
+
+  <div id="carousel"></div>
+  <hr class="none">
+
+  <div class="labels col-md-3 pull-left">
+    <span>WYSIWYG</span>
+  </div>
+  <hr class="none">
+
+  <div class="main col-md-12 pull-left">
+    <textarea ui-tinymce="ContentHome.bodyWYSIWYGOptions" class="form-control"
+              rows="5" col="100"
+              placeholder="This is WYSIWYG"
+              data-ng-model="ContentHome.data.content.description"></textarea>
+  </div>
+  <hr class="none">
+
+  <div class="labels col-md-12 pull-left">
+    <div>
+      <hr class="none">
+      <label class="radio-inline nextLine">
+        <input name="radioGroup" id="radio1" value="a" type="radio" data-ng-model="ContentHome.opt" ng-change="ContentHome.Disp()"> All Matches(All match data, updated every minute)
+      </label><br>
+      <label class="radio-inline nextLine">
+        <input name="radioGroup" id="radio2" value="b" type="radio" data-ng-model="ContentHome.opt" ng-change="ContentHome.Disp()"> Today's Match(Today's matches)
+      </label><br>
+      <label class="radio-inline nextLine">
+        <input name="radioGroup" id="radio3" value="c" type="radio" data-ng-model="ContentHome.opt" ng-change="ContentHome.Disp()"> Score Board(Results for teams by group, ordered by current group position)
+      </label><br>
+      <label class="radio-inline nextLine">
+        <input name="radioGroup" id="radio4" value="d" type="radio" data-ng-model="ContentHome.opt" ng-change="ContentHome.Disp()"> Matches for any country, by entering their FIFA Code(USA)
+      </label><br>
+      <label class="radio-inline nextLine">
+        <input name="radioGroup" id="radio5" value="e" type="radio" data-ng-model="ContentHome.opt" ng-change="ContentHome.Disp()"> Teams
+      </label><br>
+    </div>
+  </div>
+
+<div ng-if="ContentHome.opt == 'a'">
+  <table>
+    <thead>
+    <th>Country</th>
+    <th>Fifa_code</th>
+    <th>Group_id</th>
+    <th>Games Played</th>
+    <th>Wins</th>
+    <th>Lose</th>
+    <th>Points</th>
+    <th>goals_for</th>
+    <th>goals_against</th>
+    </thead>
+    <tbody>
+      <tr ng-repeat="data in ContentHome.HitOne">
+      <td>{{data.country}}</td>
+      <td>{{data.fifa_code}}</td>
+      <td>{{data.group_id}}</td>
+      <td>{{data.games_played}}</td>
+      <td>{{data.wins}}</td>
+      <td>{{data.losses}}</td>
+      <td>{{data.points}}</td>
+      <td>{{data.goals_for}}</td>
+      <td>{{data.goals_against}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+  <div ng-if="ContentHome.opt == 'b'">
+    <table>
+      <thead>
+      <th>Country</th>
+      <th>Fifa_code</th>
+      <th>Group_id</th>
+      <th>Games Played</th>
+      <th>Wins</th>
+      <th>Lose</th>
+      <th>Points</th>
+      <th>goals_for</th>
+      <th>goals_against</th>
+      </thead>
+      <tbody>
+      <tr ng-repeat="data in ContentHome.HitTwo">
+        <td>{{data.country}}</td>
+        <td>{{data.fifa_code}}</td>
+        <td>{{data.group_id}}</td>
+        <td>{{data.games_played}}</td>
+        <td>{{data.wins}}</td>
+        <td>{{data.losses}}</td>
+        <td>{{data.points}}</td>
+        <td>{{data.goals_for}}</td>
+        <td>{{data.goals_against}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div ng-if="ContentHome.opt == 'c'">
+    <table>
+      <thead>
+      <th>Country</th>
+      <th>Fifa_code</th>
+      <th>Group_id</th>
+      <th>Games Played</th>
+      <th>Wins</th>
+      <th>Lose</th>
+      <th>Points</th>
+      <th>goals_for</th>
+      <th>goals_against</th>
+      </thead>
+      <tbody>
+      <tr ng-repeat="data in ContentHome.HitThree">
+        <td>{{data.country}}</td>
+        <td>{{data.fifa_code}}</td>
+        <td>{{data.group_id}}</td>
+        <td>{{data.games_played}}</td>
+        <td>{{data.wins}}</td>
+        <td>{{data.losses}}</td>
+        <td>{{data.points}}</td>
+        <td>{{data.goals_for}}</td>
+        <td>{{data.goals_against}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div ng-if="ContentHome.opt == 'd'">
+    <table>
+      <thead>
+      <th>Country</th>
+      <th>Fifa_code</th>
+      <th>Group_id</th>
+      <th>Games Played</th>
+      <th>Wins</th>
+      <th>Lose</th>
+      <th>Points</th>
+      <th>goals_for</th>
+      <th>goals_against</th>
+      </thead>
+      <tbody>
+      <tr ng-repeat="data in ContentHome.HitFour">
+        <td>{{data.country}}</td>
+        <td>{{data.fifa_code}}</td>
+        <td>{{data.group_id}}</td>
+        <td>{{data.games_played}}</td>
+        <td>{{data.wins}}</td>
+        <td>{{data.losses}}</td>
+        <td>{{data.points}}</td>
+        <td>{{data.goals_for}}</td>
+        <td>{{data.goals_against}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div ng-if="ContentHome.opt == 'e'">
+    <table>
+      <thead>
+      <th>Country</th>
+      <th>Fifa_code</th>
+      <th>Group_id</th>
+      <th>Games Played</th>
+      <th>Wins</th>
+      <th>Lose</th>
+      <th>Points</th>
+      <th>goals_for</th>
+      <th>goals_against</th>
+      </thead>
+      <tbody>
+      <tr ng-repeat="data in ContentHome.HitFive">
+        <td>{{data.country}}</td>
+        <td>{{data.fifa_code}}</td>
+        <td>{{data.group_id}}</td>
+        <td>{{data.games_played}}</td>
+        <td>{{data.wins}}</td>
+        <td>{{data.losses}}</td>
+        <td>{{data.points}}</td>
+        <td>{{data.goals_for}}</td>
+        <td>{{data.goals_against}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
+
+</div>

@@ -1,22 +1,22 @@
 {
-  "author":"Akash Yadav"
+"author":"Akash Yadav"
 ,"pluginName":"women-WC16-buildfire"
-,"pluginDescription":""
-,"supportEmail":""
+,"pluginDescription":"Women World Cup FIFA via api"
+,"supportEmail":"[akash.yadav@tothenew.com]"
 ,"control":{
-  "content":{
-    "enabled":true
-  }
+"content":{
+"enabled":true
+}
 , "design":{
-    "enabled":true
-  }
+"enabled":false
+}
 , "settings":{
-    "enabled":false
-  }
+"enabled":false
+}
 }
 ,"widget":{
 
 },
-  "features" : [],
-  "languages" : ["en"]
+"features" : [],
+"languages" : ["en"]
 }
