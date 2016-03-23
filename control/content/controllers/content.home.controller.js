@@ -25,6 +25,7 @@
         ContentHome.opt4 = false;
         ContentHome.opt5 = false;
         ContentHome.opt = '';
+        ContentHome.optSelected = '';
 
 
         ContentHome.Disp = function(){
@@ -35,35 +36,35 @@ console.log('i am here',ContentHome.opt);
               AllMatchesApi.getAll(function(data){
                 ContentHome.HitOne = data;
                 console.log('One>>>>>>>',ContentHome.HitOne);
-                // ContentHome.opt1 = true;
+                ContentHome.optSelected = 'a';
               });
               break;
             case 'b':
               TodayMatchApi.getAll(function(data){
                 ContentHome.HitTwo = data;
                 console.log('Two>>>>>>',ContentHome.HitTwo);
-                //ContentHome.opt2 = true;
+                ContentHome.optSelected = 'b';
               });
               break;
             case 'c':
               ScoreBoardApi.getAll(function(data){
                 ContentHome.HitThree = data;
                 console.log('Three>>>>>>>',ContentHome.HitThree);
-                //ContentHome.opt3 = true;
+                ContentHome.optSelected = 'c';
               });
               break;
             case 'd':
               FifaCodeApi.getAll({fifa_code:'USA'},function(data){
                 ContentHome.HitFour = data;
                 console.log('Four>>>>>>>',ContentHome.HitFour);
-                //ContentHome.opt4 = true;
+                ContentHome.optSelected = 'd';
               });
               break;
             case 'e':
               TeamsApi.getAll(function(data){
                 ContentHome.HitFive = data;
                 console.log('Five>>>>>>>>>>>',ContentHome.HitFive);
-                //ContentHome.opt5 = true;
+                ContentHome.optSelected = 'e';
               });
               break;
           }
