@@ -7,68 +7,159 @@
 (function (angular) {
   angular
     .module('women-WC16-buildfire')
-    .controller('ContentHomeCtrl', ['$scope','AllMatchesApi','TodayMatchApi','ScoreBoardApi','FifaCodeApi','TeamsApi',
-      function ($scope,AllMatchesApi,TodayMatchApi,ScoreBoardApi,FifaCodeApi,TeamsApi) {
+    .controller('ContentHomeCtrl', ['$scope',
+      function ($scope) {
 
 
         console.log("i am in >>>>>>>>>>>>>>>>>>>>>>>");
         var ContentHome = this;
         ContentHome.message = 'Aki';
         /*ContentHome.HitOne = {};
-        ContentHome.HitTwo = {};
-        ContentHome.HitThree = {};
-        ContentHome.HitFour = {};
-        ContentHome.HitFive = {};*/
+         ContentHome.HitTwo = {};
+         ContentHome.HitThree = {};
+         ContentHome.HitFour = {};
+         ContentHome.HitFive = {};*/
         ContentHome.opt1 = false;
         ContentHome.opt2 = false;
         ContentHome.opt3= false;
         ContentHome.opt4 = false;
         ContentHome.opt5 = false;
-        ContentHome.opt = '';
-        ContentHome.optSelected = '';
+        //ContentHome.opt = '';
+        //ContentHome.optSelected = '';
+        ContentHome.bodyWYSIWYG_data = '';
 
+        ContentHome.urlOne = 'http://worldcup.sfg.io/matches';
+        ContentHome.urlTwo = 'http://worldcup.sfg.io/matches/today';
+        ContentHome.urlThree = 'http://worldcup.sfg.io/teams/results';
+        ContentHome.urlFour = 'http://worldcup.sfg.io/matches/country';
+        ContentHome.urlFive = 'http://worldcup.sfg.io/teams/';
 
-        ContentHome.Disp = function(){
-console.log('i am here',ContentHome.opt);
+        ContentHome.url = {
+          urlOne : '',
+          urlTwo : '',
+          urlThree : '',
+          urlFour : '',
+          urlFive : ''
+        };
 
-          switch (ContentHome.opt) {
-            case 'a':
-              AllMatchesApi.getAll(function(data){
-                ContentHome.HitOne = data;
-                console.log('One>>>>>>>',ContentHome.HitOne);
-                ContentHome.optSelected = 'a';
-              });
-              break;
-            case 'b':
-              TodayMatchApi.getAll(function(data){
-                ContentHome.HitTwo = data;
-                console.log('Two>>>>>>',ContentHome.HitTwo);
-                ContentHome.optSelected = 'b';
-              });
-              break;
-            case 'c':
-              ScoreBoardApi.getAll(function(data){
-                ContentHome.HitThree = data;
-                console.log('Three>>>>>>>',ContentHome.HitThree);
-                ContentHome.optSelected = 'c';
-              });
-              break;
-            case 'd':
-              FifaCodeApi.getAll({fifa_code:'USA'},function(data){
-                ContentHome.HitFour = data;
-                console.log('Four>>>>>>>',ContentHome.HitFour);
-                ContentHome.optSelected = 'd';
-              });
-              break;
-            case 'e':
-              TeamsApi.getAll(function(data){
-                ContentHome.HitFive = data;
-                console.log('Five>>>>>>>>>>>',ContentHome.HitFive);
-                ContentHome.optSelected = 'e';
-              });
-              break;
+        var tmrDelay = null;
+
+        /* buildfire.datastore.update({id : '56f26da6767085440528c03b'},{url:ContentHome.url},'worldCupUrl',function(e){
+         if(e)
+         alert("error");
+         else{
+         console.log('update - content - url >>>>>>>>>>>>>>>>>>');
+         }
+
+         });*/
+
+        ContentHome.changeUrl = function(url,opt){
+          console.log('opt >>>>>',opt);
+          console.log('url >>>>>',url);
+          console.log('urlObject Outside >>>>>',ContentHome.url);
+
+          if(url != undefined){
+
+            switch (opt) {
+              case 'a':
+                ContentHome.url.urlOne = url;
+                ContentHome.saveUrl(ContentHome.url);
+                break;
+              case 'b':
+                ContentHome.url.urlTwo = url;
+                ContentHome.saveUrl(ContentHome.url);
+                break;
+              case 'c':
+                ContentHome.url.urlThree = url;
+                ContentHome.saveUrl(ContentHome.url);
+                break;
+              case 'd':
+                ContentHome.url.urlFour = url;
+                ContentHome.saveUrl(ContentHome.url);
+                break;
+              case 'e':
+                ContentHome.url.urlFive = url;
+                ContentHome.saveUrl(ContentHome.url);
+                break;
+            }
+
           }
 
+        }
+
+
+        /*
+         * Call the datastore to save the data object
+         */
+        var saveData = function (newObj) {
+
+          if (newObj == undefined)return;
+
+          buildfire.datastore.save(newObj,'wysiwyg', function (err, result) {
+            if (err || !result)
+              alert(JSON.stringify(err));
+            else
+              console.log('data saved');
+          });
+        };
+
+
+        /*
+         * create an artificial delay so api isnt called on every character entered
+         * */
+
+        var saveDataWithDelay = function (newObj,oldObj) {
+          if(newObj == oldObj)
+            return;
+          if (tmrDelay)clearTimeout(tmrDelay);
+          tmrDelay = setTimeout(function () {
+            saveData(newObj);
+          }, 500);
+        };
+
+
+
+
+
+        /// handle the loading Url
+        ContentHome.loadUrls = function(urls){
+          // create an instance and pass it the items if you don't have items yet just pass []
+          ContentHome.url = urls;
+
+          if(!$scope.$$phase){$scope.$digest();}
+
+          if (tmrDelay){clearTimeout(tmrDelay)};
+
+          console.log("retrieved data url >>>>>",ContentHome.url);
+          console.log("urls >>>>>",urls);
+
+
+          $scope.$watch(ContentHome.bodyWYSIWYG_data, saveDataWithDelay, true);
+        }
+
+        /// call buildfire datastore to see if there are any previously saved Url item
+        buildfire.datastore.get('worldCupUrl',function(err,obj){
+          if(err)
+            alert('error');
+          else{
+
+            console.log('get - content >>>>>>>>>>>>>>>>>>');
+            console.log('get - content - url >>>>>>>>>>>>>>>>>>',obj);
+            ContentHome.loadUrls(obj.data.url)
+          }
+        });
+
+        /// save any changes in Url item
+        ContentHome.saveUrl = function(item){
+          console.log('saving url...');
+          buildfire.datastore.save({url:item},'worldCupUrl',function(e){
+            if(e)
+              alert("error");
+            else{
+              console.log('save - content - url >>>>>>>>>>>>>>>>>>');
+            }
+
+          });
         }
 
 
@@ -83,21 +174,26 @@ console.log('i am here',ContentHome.opt);
         }
 
         /// call buildfire datastore to see if there are any previously saved items
-        buildfire.datastore.get(function(err,obj){
+        buildfire.datastore.get('worldCup',function(err,obj){
           if(err)
             alert('error');
-          else
+          else{
+            console.log('get - content >>>>>>>>>>>>>>>>>>');
             loadItems(obj.data.carouselItems)
+          }
         });
 
         /// save any changes in items
         function save(items){
           console.log('saving...');
-          buildfire.datastore.save({carouselItems:items},function(e){
+          buildfire.datastore.save({carouselItems:items},'worldCup',function(e){
             if(e)
               alert("error");
-            else
+            else{
+              console.log('save - content >>>>>>>>>>>>>>>>>>');
               console.log('saved.');
+            }
+
           });
         }
 
@@ -119,15 +215,6 @@ console.log('i am here',ContentHome.opt);
           save(editor.items);
         };
 
-        //updateMasterItem(_data);
-
-        ContentHome.bodyWYSIWYGOptions = {
-          plugins: 'advlist autolink link image lists charmap print preview',
-          skin: 'lightgray',
-          trusted: true,
-          theme: 'modern'
-
-        };
 
 
         console.log("i am out >>>>>>>>>>>>>>>>>>>>>>>");

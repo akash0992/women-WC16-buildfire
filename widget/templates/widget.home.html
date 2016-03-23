@@ -1,0 +1,169 @@
+
+<div id="carousel"></div>
+<hr class="none">
+<span>Here comes the WYSIWYG</span>
+<hr class="none">
+<div>
+  <div ng-bind-html="data.content.text"></div>
+</div>
+<hr class="none">
+<div class="labels col-md-12 pull-left">
+  <div>
+    <hr class="none">
+    <label class="radio-inline nextLine">
+      <input name="radioGroup" id="radio1" value="a" type="radio" data-ng-model="WidgetHome.opt.checked" ng-change="WidgetHome.Disp()"> All Matches
+    </label><br>
+    <label class="radio-inline nextLine">
+      <input name="radioGroup" id="radio2" value="b" type="radio" data-ng-model="WidgetHome.opt.checked" ng-change="WidgetHome.Disp()"> Today's Matches
+    </label><br>
+    <label class="radio-inline nextLine">
+      <input name="radioGroup" id="radio3" value="c" type="radio" data-ng-model="WidgetHome.opt.checked" ng-change="WidgetHome.Disp()"> Score Board
+    </label><br>
+    <label class="radio-inline nextLine">
+      <input name="radioGroup" id="radio4" value="d" type="radio" data-ng-model="WidgetHome.opt.checked" ng-change="WidgetHome.Disp()"> Matches via FIFA Code(USA)
+    </label><br>
+    <label class="radio-inline nextLine">
+      <input name="radioGroup" id="radio5" value="e" type="radio" data-ng-model="WidgetHome.opt.checked" ng-change="WidgetHome.Disp()"> Teams
+    </label><br>
+  </div>
+</div>
+
+<hr class="none">
+<hr class="none">
+<br>
+
+
+<div>
+<div ng-if="WidgetHome.optSelected == 'a'" class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead>
+    <th>away_team</th>
+    <th>away_team_code</th>
+    <th>home_team</th>
+    <th>home_team_code</th>
+    <th>location</th>
+    <th>match_number</th>
+    <th>status</th>
+    <th>winner</th>
+    <th>winner_code</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="data in WidgetHome.HitOne">
+      <td>{{data.away_team.country}}</td>
+      <td>{{data.away_team.code}}</td>
+      <td>{{data.home_team.country}}</td>
+      <td>{{data.home_team.code}}</td>
+      <td>{{data.location}}</td>
+      <td>{{data.match_number}}</td>
+      <td>{{data.status}}</td>
+      <td>{{data.winner}}</td>
+      <td>{{data.winner_code}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div ng-if="WidgetHome.optSelected == 'b'" class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead>
+    <th>Country</th>
+    <th>Fifa_code</th>
+    <th>Group_id</th>
+    <th>Games Played</th>
+    <th>Wins</th>
+    <th>Lose</th>
+    <th>Points</th>
+    <th>goals_for</th>
+    <th>goals_against</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="data in WidgetHome.HitTwo">
+      <td>{{data.country}}</td>
+      <td>{{data.fifa_code}}</td>
+      <td>{{data.group_id}}</td>
+      <td>{{data.games_played}}</td>
+      <td>{{data.wins}}</td>
+      <td>{{data.losses}}</td>
+      <td>{{data.points}}</td>
+      <td>{{data.goals_for}}</td>
+      <td>{{data.goals_against}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div ng-if="WidgetHome.optSelected == 'c'" class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead>
+    <th>Country</th>
+    <th>Fifa_code</th>
+    <th>Group_id</th>
+    <th>Games Played</th>
+    <th>Wins</th>
+    <th>Lose</th>
+    <th>Points</th>
+    <th>goals_for</th>
+    <th>goals_against</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="data in WidgetHome.HitThree">
+      <td>{{data.country}}</td>
+      <td>{{data.fifa_code}}</td>
+      <td>{{data.group_id}}</td>
+      <td>{{data.games_played}}</td>
+      <td>{{data.wins}}</td>
+      <td>{{data.losses}}</td>
+      <td>{{data.points}}</td>
+      <td>{{data.goals_for}}</td>
+      <td>{{data.goals_against}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div ng-if="WidgetHome.optSelected == 'd'" class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead>
+    <th>away_team</th>
+    <th>away_team_code</th>
+    <th>home_team</th>
+    <th>home_team_code</th>
+    <th>location</th>
+    <th>match_number</th>
+    <th>status</th>
+    <th>winner</th>
+    <th>winner_code</th>
+    </thead>
+    <tr ng-repeat="data in WidgetHome.HitFour">
+      <td>{{data.away_team.country}}</td>
+      <td>{{data.away_team.code}}</td>
+      <td>{{data.home_team.country}}</td>
+      <td>{{data.home_team.code}}</td>
+      <td>{{data.location}}</td>
+      <td>{{data.match_number}}</td>
+      <td>{{data.status}}</td>
+      <td>{{data.winner}}</td>
+      <td>{{data.winner_code}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div ng-if="WidgetHome.optSelected == 'e'" class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead>
+    <th>Country</th>
+    <th>Fifa_code</th>
+    <th>Group_id</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="data in WidgetHome.HitFive">
+      <td>{{data.country}}</td>
+      <td>{{data.fifa_code}}</td>
+      <td>{{data.group_id}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
