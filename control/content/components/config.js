@@ -6,7 +6,6 @@
 
 (function (angular) {
   angular.module('women-WC16-buildfire')
-    //injected ngRoute for routing
     .config(['$routeProvider', function ($routeProvider) {
       $routeProvider
         .when('/', {
