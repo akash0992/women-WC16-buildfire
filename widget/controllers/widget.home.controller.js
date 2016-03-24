@@ -7,8 +7,8 @@
 (function (angular) {
   angular
     .module('women-WC16-buildfire-widget')
-    .controller('WidgetHomeCtrl', ['$scope','AllMatchesApi','TodayMatchApi','ScoreBoardApi','FifaCodeApi','TeamsApi','$http',
-      function ($scope,AllMatchesApi,TodayMatchApi,ScoreBoardApi,FifaCodeApi,TeamsApi,$http) {
+    .controller('WidgetHomeCtrl', ['$scope','$http','$sce',
+      function ($scope,$http,$sce) {
 
 
         console.log("i am in widget >>>>>>>>>>>>>>>>>>>>>>>");
@@ -35,17 +35,17 @@
           urlFour : '',
           urlFive : ''
         };
-
+        WidgetHome.data_content = '';
 
         WidgetHome.Disp = function(){
-          console.log('i am here',WidgetHome.opt.checked);
+        //  console.log('i am here',WidgetHome.opt.checked);
 
           switch (WidgetHome.opt.checked) {
             case 'a':
 
               $http.get(WidgetHome.url.urlOne).then(function(res){
                 WidgetHome.HitOne = res.data;
-                console.log('One>>>>>>>',WidgetHome.HitOne);
+              //  console.log('One>>>>>>>',WidgetHome.HitOne);
                 WidgetHome.optSelected = 'a';
               });
 
@@ -59,7 +59,7 @@
 
               $http.get(WidgetHome.url.urlTwo).then(function(res){
                 WidgetHome.HitTwo = res.data;
-                console.log('Two>>>>>>>',WidgetHome.HitTwo);
+              //  console.log('Two>>>>>>>',WidgetHome.HitTwo);
                 WidgetHome.optSelected = 'b';
               });
 
@@ -73,7 +73,7 @@
 
               $http.get(WidgetHome.url.urlThree).then(function(res){
                 WidgetHome.HitThree = res.data;
-                console.log('Three>>>>>>>',WidgetHome.HitThree);
+             //   console.log('Three>>>>>>>',WidgetHome.HitThree);
                 WidgetHome.optSelected = 'c';
               });
 
@@ -87,7 +87,7 @@
 
               $http.get(WidgetHome.url.urlFour).then(function(res){
                 WidgetHome.HitFour = res.data;
-                console.log('Four>>>>>>>',WidgetHome.HitFour);
+              //  console.log('Four>>>>>>>',WidgetHome.HitFour);
                 WidgetHome.optSelected = 'd';
               });
 
@@ -101,7 +101,7 @@
 
               $http.get(WidgetHome.url.urlFive).then(function(res){
                 WidgetHome.HitFive = res.data;
-                console.log('Five>>>>>>>',WidgetHome.HitFive);
+               // console.log('Five>>>>>>>',WidgetHome.HitFive);
                 WidgetHome.optSelected = 'e';
               });
 
@@ -126,8 +126,8 @@
           if(!$scope.$$phase){
             $scope.$digest();
           }
-          console.log("retrieved data url >>>>>",WidgetHome.url);
-          console.log("urls >>>>>",urls);
+        /*  console.log("retrieved data url >>>>>",WidgetHome.url);
+          console.log("urls >>>>>",urls);*/
         }
 
 
@@ -137,21 +137,64 @@
           if(err)
             alert('error');
           else{
-            console.log('get - widget - url >>>>>>>>>>>>>>>>>>',obj);
+          /*  console.log('get - widget - url >>>>>>>>>>>>>>>>>>',obj);*/
             WidgetHome.loadUrls(obj.data.url);
           }
         });
 
 
+        //////////////////////////wysiwyg////////////////////////
 
+        /// handle the loading wysiwyg
+        WidgetHome.loadWysiwyg = function(result){
+
+          if (result) WidgetHome.bind(result.data);
+
+/*
+          WidgetHome.data_content = result;
+
+          if(!$scope.$$phase){
+            $scope.$digest();
+          }
+            console.log("retrieved data wysiwyg >>>>>",WidgetHome.data_content);
+           console.log("wysiwyg >>>>>",result);
+*/
+        }
+
+
+
+        /// load any previously saved wysiwyg
+        buildfire.datastore.get('wysiwyg',function(err,obj){
+          if(err)
+            alert('error');
+          else{
+              console.log('get - widget - wysiwyg >>>>>>>>>>>>>>>>>>',obj);
+
+            WidgetHome.loadWysiwyg(obj);
+          }
+        });
+
+        /*
+         * bind data to scope
+         * */
+        WidgetHome.bind = function(data) {
+          WidgetHome.data_content = data;
+          if (data && data.data_content) {
+            WidgetHome.data_content = $sce.trustAsHtml(data.data_content);
+          }
+          if(!$scope.$$phase)$scope.$digest();
+        }
+
+
+        /////////////////////////////////////////carousel///////////////////////////////
 
         ///create new instance of buildfire carousel viewer
-        var view = new buildfire.components.carousel.view("#carousel", []);
+        WidgetHome.view = new buildfire.components.carousel.view("#carousel", []);
 
         /// load items
         WidgetHome.loadItems = function(carouselItems){
           // create an instance and pass it the items if you don't have items yet just pass []
-          view.loadItems(carouselItems);
+          WidgetHome.view.loadItems(carouselItems);
         }
 
         /// load any previously saved items
@@ -159,7 +202,7 @@
           if(err)
             alert('error');
           else{
-            console.log('get - widget >>>>>>>>>>>>>>>>>>');
+          /*  console.log('get - widget >>>>>>>>>>>>>>>>>>');*/
             WidgetHome.loadItems(obj.data.carouselItems)
           }
         });
@@ -175,6 +218,10 @@
           if(e.tag == 'worldCupUrl'){
             WidgetHome.loadUrls(e.data.url);
             console.log('Updated - widget - WorldCupUrl >>>>>>>>>>>>>>>>>>');
+          }
+          if(e.tag == 'wysiwyg'){
+            WidgetHome.loadWysiwyg(e);
+            console.log('Updated - widget - wysiwyg >>>>>>>>>>>>>>>>>>');
           }
         })
 

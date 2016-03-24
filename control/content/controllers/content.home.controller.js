@@ -27,6 +27,8 @@
         //ContentHome.opt = '';
         //ContentHome.optSelected = '';
         ContentHome.bodyWYSIWYG_data = '';
+        ContentHome.data_content = '';
+        $scope.id = '';
 
         ContentHome.urlOne = 'http://worldcup.sfg.io/matches';
         ContentHome.urlTwo = 'http://worldcup.sfg.io/matches/today';
@@ -44,20 +46,12 @@
 
         var tmrDelay = null;
 
-        /* buildfire.datastore.update({id : '56f26da6767085440528c03b'},{url:ContentHome.url},'worldCupUrl',function(e){
-         if(e)
-         alert("error");
-         else{
-         console.log('update - content - url >>>>>>>>>>>>>>>>>>');
-         }
-
-         });*/
 
         ContentHome.changeUrl = function(url,opt){
-          console.log('opt >>>>>',opt);
+         /* console.log('opt >>>>>',opt);
           console.log('url >>>>>',url);
           console.log('urlObject Outside >>>>>',ContentHome.url);
-
+*/
           if(url != undefined){
 
             switch (opt) {
@@ -88,14 +82,36 @@
         }
 
 
-        /*
-         * Call the datastore to save the data object
-         */
-        var saveData = function (newObj) {
 
+
+        /*
+         * Go pull any previously saved data for wysiwyg
+         * */
+        buildfire.datastore.get('wysiwyg',function (err, result) {
+          //console.log("getting wysiwyg ....");
+          if (result) {
+            //console.log("getting wysiwyg .... found result>>>>>>>>>",result);
+            ContentHome.data_content = result.data.data_content;
+            $scope.id = result.id;
+            if(!$scope.$$phase)$scope.$digest();
+            if (tmrDelay)clearTimeout(tmrDelay);
+          }
+          /*
+           * watch for changes in data and trigger the saveDataWithDelay function on change for wysiwyg
+           * */
+          $scope.$watch('ContentHome.data_content', ContentHome.saveDataWithDelay, true);
+        });
+
+
+        /*
+         * Call the datastore to save the data object for wysiwyg
+         */
+        ContentHome.saveData = function (newObj) {
+        //  console.log("saveData wysiwyg ....");
           if (newObj == undefined)return;
 
-          buildfire.datastore.save(newObj,'wysiwyg', function (err, result) {
+          buildfire.datastore.save({'data_content':newObj},'wysiwyg', function (err, result) {
+          //  console.log("datastore.save data_content wysiwyg .... result",result);
             if (err || !result)
               alert(JSON.stringify(err));
             else
@@ -105,19 +121,21 @@
 
 
         /*
-         * create an artificial delay so api isnt called on every character entered
+         * create an artificial delay so api isnt called on every character entered for wysiwyg
          * */
 
-        var saveDataWithDelay = function (newObj,oldObj) {
+        ContentHome.saveDataWithDelay = function (newObj,oldObj) {
+          //console.log("saveDataWithDelay wysiwyg ....");
           if(newObj == oldObj)
             return;
           if (tmrDelay)clearTimeout(tmrDelay);
           tmrDelay = setTimeout(function () {
-            saveData(newObj);
+            //console.log("saveData  wysiwyg  called....");
+            //console.log("saveData  wysiwyg  called.... new obj .....",newObj);
+            //console.log("saveData  wysiwyg  called.... old obj .....",oldObj);
+            ContentHome.saveData(newObj);
           }, 500);
         };
-
-
 
 
 
@@ -130,11 +148,9 @@
 
           if (tmrDelay){clearTimeout(tmrDelay)};
 
-          console.log("retrieved data url >>>>>",ContentHome.url);
+         /* console.log("retrieved data url >>>>>",ContentHome.url);
           console.log("urls >>>>>",urls);
-
-
-          $scope.$watch(ContentHome.bodyWYSIWYG_data, saveDataWithDelay, true);
+*/
         }
 
         /// call buildfire datastore to see if there are any previously saved Url item
@@ -143,8 +159,8 @@
             alert('error');
           else{
 
-            console.log('get - content >>>>>>>>>>>>>>>>>>');
-            console.log('get - content - url >>>>>>>>>>>>>>>>>>',obj);
+           /* console.log('get - content >>>>>>>>>>>>>>>>>>');
+            console.log('get - content - url >>>>>>>>>>>>>>>>>>',obj);*/
             ContentHome.loadUrls(obj.data.url)
           }
         });
@@ -165,12 +181,12 @@
 
 
         /// create a new instance of the buildfire carousel editor
-        var editor = new buildfire.components.carousel.editor("#carousel");
+        ContentHome.editor = new buildfire.components.carousel.editor("#carousel");
 
         /// handle the loading
-        function loadItems(carouselItems){
+        ContentHome.loadItems = function(carouselItems){
           // create an instance and pass it the items if you don't have items yet just pass []
-          editor.loadItems(carouselItems);
+          ContentHome.editor.loadItems(carouselItems);
         }
 
         /// call buildfire datastore to see if there are any previously saved items
@@ -178,19 +194,19 @@
           if(err)
             alert('error');
           else{
-            console.log('get - content >>>>>>>>>>>>>>>>>>');
-            loadItems(obj.data.carouselItems)
+           /* console.log('get - content >>>>>>>>>>>>>>>>>>');*/
+            ContentHome.loadItems(obj.data.carouselItems)
           }
         });
 
         /// save any changes in items
-        function save(items){
+        ContentHome.save = function(items){
           console.log('saving...');
           buildfire.datastore.save({carouselItems:items},'worldCup',function(e){
             if(e)
               alert("error");
             else{
-              console.log('save - content >>>>>>>>>>>>>>>>>>');
+              /*console.log('save - content >>>>>>>>>>>>>>>>>>');*/
               console.log('saved.');
             }
 
@@ -199,23 +215,24 @@
 
 
         // this method will be called when a new item added to the list
-        editor.onAddItems = function (items) {
-          save(editor.items);
+        ContentHome.editor.onAddItems = function (items) {
+          ContentHome.save(ContentHome.editor.items);
         };
+
         // this method will be called when an item deleted from the list
-        editor.onDeleteItem = function (item, index) {
-          save(editor.items);
+        ContentHome.editor.onDeleteItem = function (item, index) {
+          ContentHome.save(ContentHome.editor.items);
         };
+
         // this method will be called when you edit item details
-        editor.onItemChange = function (item) {
-          save(editor.items);
+        ContentHome.editor.onItemChange = function (item) {
+          ContentHome.save(ContentHome.editor.items);
         };
+
         // this method will be called when you change the order of items
-        editor.onOrderChange = function (item, oldIndex, newIndex) {
-          save(editor.items);
+        ContentHome.editor.onOrderChange = function (item, oldIndex, newIndex) {
+          ContentHome.save(ContentHome.editor.items);
         };
-
-
 
         console.log("i am out >>>>>>>>>>>>>>>>>>>>>>>");
 
