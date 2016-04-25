@@ -21,12 +21,12 @@
         ContentHome.data_content = '';
         ContentHome.id = '';
 
-        ContentHome.urlOne = 'http://worldcup.sfg.io/matches';
+       /* ContentHome.urlOne = 'http://worldcup.sfg.io/matches';
         ContentHome.urlTwo = 'http://worldcup.sfg.io/matches/today';
         ContentHome.urlThree = 'http://worldcup.sfg.io/teams/results';
         ContentHome.urlFour = 'http://worldcup.sfg.io/matches/country';
         ContentHome.urlFive = 'http://worldcup.sfg.io/teams/';
-
+*/
         ContentHome.url = {
           urlOne : '',
           urlTwo : '',
@@ -35,34 +35,49 @@
           urlFive : ''
         };
 
+        ContentHome.urlFlag = {
+          urlOneFlag : '',
+          urlTwoFlag : '',
+          urlThreeFlag : '',
+          urlFourFlag : '',
+          urlFiveFlag : ''
+        };
+
         var tmrDelay = null;
 
         /*
          ChangeUrls
          */
-        ContentHome.changeUrl = function(url,opt){
+        ContentHome.changeUrl = function(url,opt,flag){
 
           if(url != undefined){
             switch (opt) {
               case 'a':
                 ContentHome.url.urlOne = url;
-                ContentHome.saveUrl(ContentHome.url);
+                ContentHome.urlFlag.urlOneFlag = flag;
+                ContentHome.saveUrl(ContentHome.url,ContentHome.urlFlag);
                 break;
               case 'b':
                 ContentHome.url.urlTwo = url;
-                ContentHome.saveUrl(ContentHome.url);
+                ContentHome.urlFlag.urlTwoFlag = flag;
+                ContentHome.saveUrl(ContentHome.url,ContentHome.urlFlag);
                 break;
               case 'c':
                 ContentHome.url.urlThree = url;
-                ContentHome.saveUrl(ContentHome.url);
+                ContentHome.urlFlag.urlThreeFlag = flag;
+                ContentHome.saveUrl(ContentHome.url,ContentHome.urlFlag);
                 break;
               case 'd':
                 ContentHome.url.urlFour = url;
-                ContentHome.saveUrl(ContentHome.url);
+                ContentHome.urlFlag.urlFourFlag = flag;
+                ContentHome.saveUrl(ContentHome.url,ContentHome.urlFlag);
+
                 break;
               case 'e':
                 ContentHome.url.urlFive = url;
-                ContentHome.saveUrl(ContentHome.url);
+                ContentHome.urlFlag.urlFiveFlag = flag;
+                ContentHome.saveUrl(ContentHome.url,ContentHome.urlFlag);
+
                 break;
             }
           }
@@ -93,7 +108,7 @@
          */
         ContentHome.saveData = function (newObj) {
           if (newObj == undefined)return;
-          buildfire.datastore.save({'data_content':newObj},'wysiwyg', function (err, result) {
+          buildfire.datastore.save({data_content:newObj},'wysiwyg', function (err, result) {
             if (err || !result)
               alert(JSON.stringify(err));
             else
@@ -118,8 +133,9 @@
         /*
          handle the loading Url
          */
-        ContentHome.loadUrls = function(urls){
+        ContentHome.loadUrls = function(urls,flags){
           ContentHome.url = urls;
+          ContentHome.urlFlag = flags;
           if(!$scope.$$phase){$scope.$digest();}
           if (tmrDelay){clearTimeout(tmrDelay)};
         }
@@ -132,7 +148,7 @@
           if(err)
             alert('error');
           else{
-            ContentHome.loadUrls(obj.data.url)
+            ContentHome.loadUrls(obj.data.url,obj.data.urlFlag)
           }
         });
 
@@ -140,8 +156,8 @@
         /*
          save any changes in Url item
          */
-        ContentHome.saveUrl = function(item){
-          buildfire.datastore.save({url:item},'worldCupUrl',function(e){
+        ContentHome.saveUrl = function(item,flag){
+          buildfire.datastore.save({url:item,urlFlag:flag},'worldCupUrl',function(e){
             if(e)
               alert("error");
             else{

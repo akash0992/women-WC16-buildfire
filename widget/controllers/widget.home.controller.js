@@ -28,6 +28,15 @@
           urlFour : '',
           urlFive : ''
         };
+
+        WidgetHome.urlFlag = {
+          urlOneFlag : '',
+          urlTwoFlag : '',
+          urlThreeFlag : '',
+          urlFourFlag : '',
+          urlFiveFlag : ''
+        };
+
         WidgetHome.data_content = '';
 
         /*
@@ -72,8 +81,10 @@
         /*
          handle the loading Url
          */
-        WidgetHome.loadUrls = function(urls){
+        WidgetHome.loadUrls = function(urls,flags){
           WidgetHome.url = urls;
+          WidgetHome.urlFlag = flags;
+
           WidgetHome.optSelected = '';
           WidgetHome.opt.checked = false;
           if(!$scope.$$phase){
@@ -88,7 +99,7 @@
           if(err)
             alert('error');
           else{
-            WidgetHome.loadUrls(obj.data.url);
+            WidgetHome.loadUrls(obj.data.url,obj.data.urlFlag);
           }
         });
 
@@ -161,7 +172,7 @@
             WidgetHome.loadItems( e.data.carouselItems);
           }
           if(e.tag == 'worldCupUrl'){
-            WidgetHome.loadUrls(e.data.url);
+            WidgetHome.loadUrls(e.data.url,e.data.urlFlag);
           }
           if(e.tag == 'wysiwyg'){
             WidgetHome.loadWysiwyg(e);

@@ -8,16 +8,6 @@
   </div>
   <hr class="none">
 
- <!-- <div class="pull-left" style="width: 100%">
-    <textarea ui-tinymce="ContentHome.bodyWYSIWYGOptions"
-              class="form-control"
-              rows="5"
-              width="100%"
-              placeholder="This is WYSIWYG"
-              data-ng-model="ContentHome.bodyWYSIWYG_data"></textarea>
-  </div>
-  <hr class="none">-->
-
   <div class="item clearfix row">
     <div class="main col-md-12 pull-left">
       <textarea id="text" ui-tinymce class="form-control" rows="5" width="100%" ng-model="ContentHome.data_content"></textarea>
@@ -29,14 +19,14 @@
   <div class="col-md-12">
     <div class="item row clearfix">
       <div class="labels col-md-3 pull-left">
-        <span>All Matches URL</span>
+        <input type="checkbox" value="ContentHome.urlFlag.urlOneFlag" data-ng-model="ContentHome.urlFlag.urlOneFlag" ng-change="ContentHome.changeUrl(ContentHome.url.urlOne,'a',ContentHome.urlFlag.urlOneFlag);"><span class="shift">All Matches</span>
       </div>
       <div class="main col-md-9 pull-right padding-left-zero row">
         <div class="pull-left col-md-8 padding-zero">
           <input type="url" class="form-control" ng-model="ContentHome.url.urlOne"/>
         </div>
         <div class="col-md-4 pull-right">
-          <a ng-click="ContentHome.changeUrl(ContentHome.url.urlOne,'a');" class="btn btn-success pull-right stretch" title="Change Url for All matches">Change Url</a>
+          <a ng-click="ContentHome.changeUrl(ContentHome.url.urlOne,'a',ContentHome.urlFlag.urlOneFlag);" class="btn btn-success pull-right stretch" title="Change Url for All matches">Change Url</a>
         </div>
       </div>
     </div>
@@ -44,14 +34,14 @@
 
     <div class="item row clearfix">
       <div class="labels col-md-3 pull-left">
-        <span>Today's Match URL</span>
+        <input type="checkbox" value="ContentHome.urlFlag.urlTwoFlag" data-ng-model="ContentHome.urlFlag.urlTwoFlag" ng-change="ContentHome.changeUrl(ContentHome.url.urlTwo,'b',ContentHome.urlFlag.urlTwoFlag);"><span class="shift">Today's Match</span>
       </div>
       <div class="main col-md-9 pull-right padding-left-zero row">
         <div class="pull-left col-md-8 padding-zero">
           <input type="url" class="form-control" ng-model="ContentHome.url.urlTwo"/>
         </div>
         <div class="col-md-4 pull-right">
-          <a ng-click="ContentHome.changeUrl(ContentHome.url.urlTwo,'b');" class="btn btn-success pull-right stretch" title="Change Url for Today's matches">Change Url</a>
+          <a ng-click="ContentHome.changeUrl(ContentHome.url.urlTwo,'b',ContentHome.urlFlag.urlTwoFlag);" class="btn btn-success pull-right stretch" title="Change Url for Today's matches">Change Url</a>
         </div>
       </div>
     </div>
@@ -59,14 +49,14 @@
 
     <div class="item row clearfix">
       <div class="labels col-md-3 pull-left">
-        <span>Score Board URL</span>
+        <input type="checkbox" value="ContentHome.urlFlag.urlThreeFlag" data-ng-model="ContentHome.urlFlag.urlThreeFlag" ng-change="ContentHome.changeUrl(ContentHome.url.urlThree,'c',ContentHome.urlFlag.urlThreeFlag);"><span class="shift">Score Board</span>
       </div>
       <div class="main col-md-9 pull-right padding-left-zero row">
         <div class="pull-left col-md-8 padding-zero">
           <input type="url" class="form-control" ng-model="ContentHome.url.urlThree"/>
         </div>
         <div class="col-md-4 pull-right">
-          <a ng-click="ContentHome.changeUrl(ContentHome.url.urlThree,'c');" class="btn btn-success pull-right stretch" title="Change Url for Score Board matches">Change Url</a>
+          <a ng-click="ContentHome.changeUrl(ContentHome.url.urlThree,'c',ContentHome.urlFlag.urlThreeFlag);" class="btn btn-success pull-right stretch" title="Change Url for Score Board matches">Change Url</a>
         </div>
       </div>
     </div>
@@ -74,14 +64,14 @@
 
     <div class="item row clearfix">
       <div class="labels col-md-3 pull-left">
-        <span>Matches for any country URL</span>
+        <input type="checkbox" value="ContentHome.urlFlag.urlFourFlag" data-ng-model="ContentHome.urlFlag.urlFourFlag" ng-change="ContentHome.changeUrl(ContentHome.url.urlFour,'d',ContentHome.urlFlag.urlFourFlag);"><span class="shift">Country</span>
       </div>
       <div class="main col-md-9 pull-right padding-left-zero row">
         <div class="pull-left col-md-8 padding-zero">
           <input type="url" class="form-control" ng-model="ContentHome.url.urlFour"/>
         </div>
         <div class="col-md-4 pull-right">
-          <a ng-click="ContentHome.changeUrl(ContentHome.url.urlFour,'d');" class="btn btn-success pull-right stretch" title="Change Url for Country">Change Url</a>
+          <a ng-click="ContentHome.changeUrl(ContentHome.url.urlFour,'d',ContentHome.urlFlag.urlFourFlag);" class="btn btn-success pull-right stretch" title="Change Url for Country">Change Url</a>
         </div>
       </div>
     </div>
@@ -89,14 +79,14 @@
 
     <div class="item row clearfix">
       <div class="labels col-md-3 pull-left">
-        <span>Teams URL</span>
+        <input type="checkbox" value="ContentHome.urlFlag.urlFiveFlag" data-ng-model="ContentHome.urlFlag.urlFiveFlag" ng-change="ContentHome.changeUrl(ContentHome.url.urlFive,'e',ContentHome.urlFlag.urlFiveFlag);"><span class="shift">Teams</span>
       </div>
       <div class="main col-md-9 pull-right padding-left-zero row">
         <div class="pull-left col-md-8 padding-zero">
           <input type="url" class="form-control" ng-model="ContentHome.url.urlFive"/>
         </div>
         <div class="col-md-4 pull-right">
-          <a ng-click="ContentHome.changeUrl(ContentHome.url.urlFive,'e');" class="btn btn-success pull-right stretch" title="Change Url for Teams">Change Url</a>
+          <a ng-click="ContentHome.changeUrl(ContentHome.url.urlFive,'e',ContentHome.urlFlag.urlFiveFlag);" class="btn btn-success pull-right stretch" title="Change Url for Teams">Change Url</a>
         </div>
       </div>
     </div>
